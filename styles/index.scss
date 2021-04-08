@@ -1,0 +1,114 @@
+/* Checkout following codepen
+*  https://codepen.io/scottkellum/pen/bHEcA
+*/
+$parallax-perspective: 1 !default;
+$parallax-element: "body" !default;
+$parallax-ios: true !default;
+
+@mixin parallax-init(
+  $perspective: $parallax-perspective,
+  $element: $parallax-element,
+  $parallax-ios: $parallax-ios
+) {
+  @if $element == "body" {
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+  }
+  #{$element} {
+    overflow: auto;
+    perspective: $perspective * 1px;
+    // Allows for smooth scrolling but disables parallax effects.
+    @if $parallax-ios == false {
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+}
+
+@mixin parallax($distance: 0, $perspective: $parallax-perspective) {
+  transform: translateZ($distance * $perspective * 1px)
+    scale(abs($distance - 1)) rotate(-180deg);
+}
+
+@include parallax-init;
+// end of mixin part
+
+.side {
+  white-space: nowrap;
+  writing-mode: tb-rl;
+  @include parallax(-0.1);
+  position: fixed;
+  top: 500px;
+
+  &--dark {
+    mix-blend-mode: difference;
+    color: rgba(32, 88, 15);
+  }
+
+  &--light {
+    mix-blend-mode: difference;
+    color: #fff;
+  }
+
+  &__title {
+    font-size: 190px;
+    font-weight: 400;
+  }
+}
+
+.main {
+  display: flex;
+  background: rgba(32, 88, 15);
+  min-height: 100vh;
+
+  &__title {
+    width: 70%;
+    color: white;
+    padding-top: 150px;
+    padding-left: 400px;
+    padding-right: 50px;
+  }
+
+  &__image {
+    width: 30%;
+    background: url("../public/bg.jpg") center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}
+
+.whitespace {
+  padding: 150px 200px;
+
+  &__title {
+    text-align: center;
+    color: rgb(243, 243, 243);
+  }
+}
+
+.showspace {
+  display: flex;
+  position: relative;
+  height: 500px;
+  background: rgb(243, 243, 243);
+
+  &__image {
+    width: 500px;
+    background: url("../public/bg.jpg") center;
+  }
+
+  &__title {
+    width: 70%;
+    color: rgba(32, 88, 15);
+    padding: 50px 150px;
+
+    ul li {
+      font-size: 28px;
+    }
+  }
+}
